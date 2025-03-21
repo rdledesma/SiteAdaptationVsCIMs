@@ -22,12 +22,18 @@ d = d.dropna()
 dTrain = d[d.date.dt.year<2024]
 dTest = d[d.date.dt.year==2024]
 
-X = d[['FR', 'sza', 'CTZ', 'argp', 'rp']]
+X = dTrain[['FR', 'sza', 'CTZ', 'argp', 'rp']]
+
+
+
+
 Xtest = dTest[['FR', 'sza', 'CTZ', 'argp', 'rp']]
-y_test = dTest.ghi
+y_test = dTest.ghi- dTest.argp
+
+
 X_train, X_val, y_train, y_val = train_test_split(
 
-    X, d.ghi, test_size=0.2, random_state=42)
+    X, dTrain.ghi - dTrain.argp, test_size=0.2, random_state=42)
 
 
 import glob
@@ -131,14 +137,14 @@ for i, params in enumerate(param_combinations):
     )
 
     # Predecir en entrenamiento y validación
-    pred_train = model.predict(Xtrain_scaled).flatten()
-    pred_val = model.predict(Xval_scaled).flatten()
-    pred_test =    model.predict(Xtest_scaled).flatten() 
+    pred_train = model.predict(Xtrain_scaled).flatten() + X_train.argp
+    pred_val = model.predict(Xval_scaled).flatten() + X_val.argp
+    pred_test =    model.predict(Xtest_scaled).flatten() + Xtest.argp 
     
     # Calcular rrmsd en train
-    rrmsd_train = m.rrmsd(y_train, pred_train)
-    rrmsd_val = m.rrmsd(y_val, pred_val)
-    rrmsd_test = m.rrmsd(y_test, pred_test)
+    rrmsd_train = m.rrmsd(y_train + dTrain.argp , pred_train)
+    rrmsd_val = m.rrmsd(y_val  + X_val.argp , pred_val)
+    rrmsd_test = m.rrmsd(y_test + Xtest.argp , pred_test)
     
     errors_test.append(rrmsd_test)
     
@@ -161,3 +167,19 @@ for i, params in enumerate(param_combinations):
 
 
 models = best_model_test
+
+
+X_pred = models.predict(Xtest_scaled).flatten() + Xtest.argp
+
+
+
+Xtest['ghiPred'] = X_pred
+
+m.rrmsd(dTest.ghi, Xtest.ghiPred)
+
+
+plt.figure()
+plt.plot(dTest.ghi)
+plt.plot(Xtest.ghiPred)
+
+

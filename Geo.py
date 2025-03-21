@@ -56,7 +56,7 @@ class Geo:
 
         self.df['TZ'] = self.df['CTZ'].apply(math.acos)
         self.df['SZA'] = self.df['CTZ'].apply(math.acos).apply(math.degrees)
-        self.df['Ys'] = list(map(self.getYs, self.df.w, self.df.CTZ, self.df.TZ, self.df.deltaRad))
+        #self.df['Ys'] = list(map(self.getYs, self.df.w, self.df.CTZ, self.df.TZ, self.df.deltaRad))
         #self.df['Ys'] = self.df.apply(lambda r: self.Ys(r['w'], r['CTZ'], r['TZ'], r['deltaRad']), axis=1)
         
         # self.df['CT'] = np.where(self.df.CTZ>0, self.df.CTZ * math.cos(math.radians(beta)) + self.df.TZ.apply(math.sin) * math.sin(math.radians(beta)) * self.df.Ys.apply(math.cos), 0)
