@@ -20,6 +20,8 @@ d['date'] = pd.to_datetime(d.date) + timedelta(minutes = 180)
 d = d.sort_values(by=['date'])
 
 
+d.to_csv('ero/data/ero.csv', index=False)
+
 plt.figure()
 plt.plot(d.date, d.ghi)
 plt.plot(d.date, d.TOA)
