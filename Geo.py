@@ -56,7 +56,7 @@ class Geo:
 
         self.df['TZ'] = self.df['CTZ'].apply(math.acos)
         self.df['SZA'] = self.df['CTZ'].apply(math.acos).apply(math.degrees)
-        #self.df['Ys'] = list(map(self.getYs, self.df.w, self.df.CTZ, self.df.TZ, self.df.deltaRad))
+        self.df['Ys'] = list(map(self.getYs, self.df.w, self.df.CTZ, self.df.TZ, self.df.deltaRad))
         #self.df['Ys'] = self.df.apply(lambda r: self.Ys(r['w'], r['CTZ'], r['TZ'], r['deltaRad']), axis=1)
         
         # self.df['CT'] = np.where(self.df.CTZ>0, self.df.CTZ * math.cos(math.radians(beta)) + self.df.TZ.apply(math.sin) * math.sin(math.radians(beta)) * self.df.Ys.apply(math.cos), 0)
@@ -211,11 +211,16 @@ class Geo:
         
         #ys = math.acos((math.sin(d) - CTZ * math.sin(math.radians(self.lat))) / (sinTitaZ * math.cos(math.radians(self.lat))))
         
-        ys = math.acos((CTZ * sinLat - math.sin(d)) / (sinTitaZ * cosLat ) )
+        try:
+            ys = math.acos((CTZ * sinLat - math.sin(d)) / (sinTitaZ * cosLat ) )
+            return signow * abs(ys)
+        except Exception:
+            return np.nan
+        
         
         #ACOS((O2*SENO(C2)-SENO(L2))/(SENO(P2)*COS(C2)))
         
-        return signow * abs(ys)
+        
     
     
     def Ys(self, omega, CTZ, TZ, d):
