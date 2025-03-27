@@ -168,10 +168,7 @@ for i, params in enumerate(param_combinations):
 
 models = best_model_test
 
-
 X_pred = models.predict(Xtest_scaled).flatten() + Xtest.argp
-
-
 
 Xtest['ghiPred'] = X_pred
 
