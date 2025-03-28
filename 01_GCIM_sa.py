@@ -64,8 +64,7 @@ plt.show()
 
 
 meas['n'] = (meas.RP - meas.R0) / (85 - meas.R0)
-meas['n'] = np.where(meas['n'] > 1, 1, meas.n)
-meas['n'] = np.where(meas['n'] < 0, 0, meas.n)
+
 
 
 
