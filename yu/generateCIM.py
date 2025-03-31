@@ -96,6 +96,7 @@ dtest = dtest.dropna()
 
 
 
+
 def ghiCMI_func(x, a, b):
     ghicc, n = x
     return ghicc * (a *  n + b)
@@ -109,7 +110,7 @@ a_opt,b_opt  = popt
 
 
 dtest['gcim'] = dtest.ghicc * (a_opt * dtest.n + b_opt)
-
+dtest.to_csv('yu/test/test.csv', index=False)
 
 
 plt.figure()

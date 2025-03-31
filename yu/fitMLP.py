@@ -13,6 +13,7 @@ from keras.optimizers import Adam
 import Metrics as m
 from Sites import Site
 from Geo import Geo
+
 site = Site('YU')
 
 # Asegurar que TensorFlow usa la GPU
@@ -60,6 +61,9 @@ dTest = d[d.date.dt.year == 2017]
 
 
 X = d[['FR', 'sza', 'CTZ', 'argp']]
+
+
+
 Xtest = dTest[['FR', 'sza', 'CTZ', 'argp']]
 y_test = dTest.ghi
 
@@ -70,6 +74,8 @@ scaler = MinMaxScaler()
 Xtrain_scaled = scaler.fit_transform(X_train)
 Xval_scaled = scaler.transform(X_val)
 Xtest_scaled = scaler.transform(Xtest)
+
+
 
 # Hiperparámetros a probar
 param_grid = {
